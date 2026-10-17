@@ -1,0 +1,36 @@
+{
+  "title": "SDFL: Temporal Key Destruction for Post-Breach Unrecoverability in Federated Learning (code release)",
+  "upload_type": "software",
+  "version": "1.0.0",
+  "description": "Code, experiment scripts and result files for the manuscript 'Temporal Key Destruction for Post-Breach Unrecoverability in Federated Learning: A Protocol and Case Study in Medical Image Segmentation'. Kvasir-SEG images are not included; see data/README.md.",
+  "creators": [
+    {
+      "name": "Sanjay Aanand, R.K.",
+      "affiliation": "Vellore Institute of Technology, Chennai"
+    },
+    {
+      "name": "Kuppili, Hara Sameeraj",
+      "affiliation": "Vellore Institute of Technology, Chennai"
+    },
+    {
+      "name": "S., Mukesh",
+      "affiliation": "Vellore Institute of Technology, Chennai"
+    },
+    {
+      "name": "P., Helen Vijitha",
+      "affiliation": "Vellore Institute of Technology, Chennai"
+    },
+    {
+      "name": "L., Jai Vinita",
+      "affiliation": "Vellore Institute of Technology, Chennai"
+    }
+  ],
+  "keywords": [
+    "federated learning",
+    "key destruction",
+    "forward security",
+    "differential privacy",
+    "medical image segmentation"
+  ],
+  "license": "MIT"
+}

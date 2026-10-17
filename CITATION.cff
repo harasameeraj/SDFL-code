@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the accompanying paper."
+title: "SDFL: Temporal Key Destruction for Post-Breach Unrecoverability in Federated Learning (code release)"
+type: software
+version: 1.0.0
+license: MIT
+authors:
+  - family-names: "Sanjay Aanand"
+    given-names: "R.K."
+    affiliation: "School of Computer Science and Engineering, Vellore Institute of Technology, Chennai"
+  - family-names: "Kuppili"
+    given-names: "Hara Sameeraj"
+    affiliation: "School of Computer Science and Engineering, Vellore Institute of Technology, Chennai"
+  - family-names: "S."
+    given-names: "Mukesh"
+    affiliation: "School of Computer Science and Engineering, Vellore Institute of Technology, Chennai"
+  - family-names: "P."
+    given-names: "Helen Vijitha"
+    affiliation: "School of Computer Science and Engineering, Vellore Institute of Technology, Chennai"
+  - family-names: "L."
+    given-names: "Jai Vinita"
+    affiliation: "School of Computer Science and Engineering, Vellore Institute of Technology, Chennai"

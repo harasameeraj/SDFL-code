@@ -1,0 +1,67 @@
+{"event": "sigma_sweep", "sigma": 0.3, "epsilon_final": 291.146054, "dice": null, "iou": null, "dice_iou_source": "theoretical projection pending actual training", "timestamp": "2026-09-05T06:14:56.861702+00:00"}
+{"event": "sigma_sweep", "sigma": 0.5, "epsilon_final": 58.375469, "dice": null, "iou": null, "dice_iou_source": "theoretical projection pending actual training", "timestamp": "2026-09-05T06:15:01.072792+00:00"}
+{"event": "sigma_sweep", "sigma": 0.8, "epsilon_final": 15.794986, "dice": null, "iou": null, "dice_iou_source": "theoretical projection pending actual training", "timestamp": "2026-09-05T06:15:04.065982+00:00"}
+{"event": "sigma_sweep", "sigma": 1.0, "epsilon_final": 9.732069, "dice": null, "iou": null, "dice_iou_source": "theoretical projection pending actual training", "timestamp": "2026-09-05T06:15:06.073993+00:00"}
+{"event": "sigma_sweep", "sigma": 1.5, "epsilon_final": 4.911783, "dice": null, "iou": null, "dice_iou_source": "theoretical projection pending actual training", "timestamp": "2026-09-05T06:15:06.834663+00:00"}
+{"event": "sigma_sweep", "sigma": 2.0, "epsilon_final": 3.304053, "dice": null, "iou": null, "dice_iou_source": "theoretical projection pending actual training", "timestamp": "2026-09-05T06:15:07.410713+00:00"}
+{"batch_size": 8, "event": "e11_started", "local_epochs": 1, "rounds": 1, "sigmas": [1.0], "timestamp": "2026-09-24T17:02:16.295615+00:00"}
+{"avg_loss": 0.7320803175068864, "event": "round_completed", "round": 1, "sigma": 1.0, "timestamp": "2026-09-24T17:03:36.011231+00:00"}
+{"completed_sigmas": [1.0], "event": "e11_completed", "output_json": "/kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.json", "timestamp": "2026-09-24T17:03:44.105150+00:00"}
+{"batch_size": 8, "event": "e11_started", "local_epochs": 3, "rounds": 20, "sigmas": [0.5, 1.0, 1.5, 2.0], "timestamp": "2026-09-24T17:03:50.914378+00:00"}
+{"avg_loss": 0.6388549587943336, "event": "round_completed", "round": 1, "sigma": 0.5, "timestamp": "2026-09-24T17:07:50.642580+00:00"}
+{"avg_loss": 0.5207972266657986, "event": "round_completed", "round": 5, "sigma": 0.5, "timestamp": "2026-09-24T17:23:39.109019+00:00"}
+{"avg_loss": 0.4884160171052823, "event": "round_completed", "round": 10, "sigma": 0.5, "timestamp": "2026-09-24T17:43:23.518660+00:00"}
+{"error": "name 'self' is not defined", "event": "sigma_failed", "sigma": 0.5, "timestamp": "2026-09-24T17:45:33.161544+00:00"}
+{"avg_loss": 0.6675488475195888, "event": "round_completed", "round": 1, "sigma": 1.0, "timestamp": "2026-09-24T17:49:21.639134+00:00"}
+{"avg_loss": 0.5529573584847177, "event": "round_completed", "round": 5, "sigma": 1.0, "timestamp": "2026-09-24T18:04:58.809716+00:00"}
+{"error": "name 'self' is not defined", "event": "sigma_failed", "sigma": 1.0, "timestamp": "2026-09-24T18:06:27.801904+00:00"}
+{"avg_loss": 0.7568541510337932, "event": "round_completed", "round": 1, "sigma": 1.5, "timestamp": "2026-09-24T18:10:26.781100+00:00"}
+{"avg_loss": 0.5992200388651504, "event": "round_completed", "round": 5, "sigma": 1.5, "timestamp": "2026-09-24T18:26:08.787980+00:00"}
+{"error": "name 'self' is not defined", "event": "sigma_failed", "sigma": 1.5, "timestamp": "2026-09-24T18:39:37.350869+00:00"}
+{"avg_loss": 0.7284835962334064, "event": "round_completed", "round": 1, "sigma": 2.0, "timestamp": "2026-09-24T18:43:30.960793+00:00"}
+{"avg_loss": 0.6131327680064372, "event": "round_completed", "round": 5, "sigma": 2.0, "timestamp": "2026-09-24T18:59:25.008532+00:00"}
+{"error": "name 'self' is not defined", "event": "sigma_failed", "sigma": 2.0, "timestamp": "2026-09-24T19:17:12.109899+00:00"}
+{"completed_sigmas": [], "event": "e11_completed", "output_json": "/kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.json", "timestamp": "2026-09-24T19:17:12.379324+00:00"}
+{"batch_size": 8, "event": "e11_started", "local_epochs": 1, "rounds": 1, "sigmas": [1.0], "timestamp": "2026-09-25T04:31:37.307623+00:00"}
+{"avg_loss": 0.7320802639229128, "event": "round_completed", "round": 1, "sigma": 1.0, "timestamp": "2026-09-25T04:33:09.563642+00:00"}
+{"completed_sigmas": [1.0], "event": "e11_completed", "output_json": "/kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.json", "timestamp": "2026-09-25T04:33:19.110196+00:00"}
+{"batch_size": 8, "event": "e11_started", "local_epochs": 3, "rounds": 20, "sigmas": [0.5, 1.0, 1.5, 2.0], "timestamp": "2026-09-25T04:33:27.545507+00:00"}
+{"avg_loss": 0.638855041678907, "event": "round_completed", "round": 1, "sigma": 0.5, "timestamp": "2026-09-25T04:38:07.937296+00:00"}
+{"avg_loss": 0.5207975591071928, "event": "round_completed", "round": 5, "sigma": 0.5, "timestamp": "2026-09-25T04:56:09.833847+00:00"}
+{"avg_loss": 0.4884164893265927, "event": "round_completed", "round": 10, "sigma": 0.5, "timestamp": "2026-09-25T05:19:09.848338+00:00"}
+{"error": "Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat2 in method wrapper_CUDA_mm)", "event": "sigma_failed", "sigma": 0.5, "timestamp": "2026-09-25T05:21:39.654785+00:00"}
+{"avg_loss": 0.667548848322345, "event": "round_completed", "round": 1, "sigma": 1.0, "timestamp": "2026-09-25T05:26:05.003814+00:00"}
+{"avg_loss": 0.5529571183602818, "event": "round_completed", "round": 5, "sigma": 1.0, "timestamp": "2026-09-25T05:43:26.921931+00:00"}
+{"error": "Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat2 in method wrapper_CUDA_mm)", "event": "sigma_failed", "sigma": 1.0, "timestamp": "2026-09-25T05:45:04.383901+00:00"}
+{"avg_loss": 0.7568541359821154, "event": "round_completed", "round": 1, "sigma": 1.5, "timestamp": "2026-09-25T05:49:27.749464+00:00"}
+{"avg_loss": 0.599219985682555, "event": "round_completed", "round": 5, "sigma": 1.5, "timestamp": "2026-09-25T06:06:57.541209+00:00"}
+{"error": "Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat2 in method wrapper_CUDA_mm)", "event": "sigma_failed", "sigma": 1.5, "timestamp": "2026-09-25T06:21:25.668690+00:00"}
+{"avg_loss": 0.7284836006485653, "event": "round_completed", "round": 1, "sigma": 2.0, "timestamp": "2026-09-25T06:25:37.929387+00:00"}
+{"avg_loss": 0.613132721847958, "event": "round_completed", "round": 5, "sigma": 2.0, "timestamp": "2026-09-25T06:42:49.271490+00:00"}
+{"error": "Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat2 in method wrapper_CUDA_mm)", "event": "sigma_failed", "sigma": 2.0, "timestamp": "2026-09-25T07:01:45.254793+00:00"}
+{"completed_sigmas": [], "event": "e11_completed", "output_json": "/kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.json", "timestamp": "2026-09-25T07:01:45.528322+00:00"}
+{"batch_size": 8, "event": "e11_started", "local_epochs": 1, "rounds": 1, "sigmas": [1.0], "timestamp": "2026-09-26T01:29:44.970769+00:00"}
+{"avg_loss": 0.7320802831890606, "event": "round_completed", "round": 1, "sigma": 1.0, "timestamp": "2026-09-26T01:31:11.074800+00:00"}
+{"completed_sigmas": [1.0], "event": "e11_completed", "output_json": "/kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.json", "timestamp": "2026-09-26T01:31:19.704108+00:00"}
+{"batch_size": 8, "event": "e11_started", "local_epochs": 3, "rounds": 20, "sigmas": [0.5, 1.0, 1.5, 2.0], "timestamp": "2026-09-26T01:31:27.125888+00:00"}
+{"avg_loss": 0.6388550169941553, "event": "round_completed", "round": 1, "sigma": 0.5, "timestamp": "2026-09-26T01:35:50.934472+00:00"}
+{"avg_loss": 0.5207976787178605, "event": "round_completed", "round": 5, "sigma": 0.5, "timestamp": "2026-09-26T01:53:06.955066+00:00"}
+{"avg_loss": 0.4884169502089722, "event": "round_completed", "round": 10, "sigma": 0.5, "timestamp": "2026-09-26T02:14:26.083666+00:00"}
+{"avg_loss": 0.47739160261571606, "event": "round_completed", "round": 15, "sigma": 0.5, "timestamp": "2026-09-26T02:35:19.010962+00:00"}
+{"avg_loss": 0.4645884680226194, "event": "round_completed", "round": 20, "sigma": 0.5, "timestamp": "2026-09-26T02:56:06.910809+00:00"}
+{"avg_loss": 0.6675488322672218, "event": "round_completed", "round": 1, "sigma": 1.0, "timestamp": "2026-09-26T03:00:21.309885+00:00"}
+{"avg_loss": 0.552957230344766, "event": "round_completed", "round": 5, "sigma": 1.0, "timestamp": "2026-09-26T03:16:51.292018+00:00"}
+{"avg_loss": 0.5257775301885123, "event": "round_completed", "round": 10, "sigma": 1.0, "timestamp": "2026-09-26T03:37:12.614894+00:00"}
+{"avg_loss": 0.5099979786559788, "event": "round_completed", "round": 15, "sigma": 1.0, "timestamp": "2026-09-26T03:58:03.405141+00:00"}
+{"avg_loss": 0.4919538847123734, "event": "round_completed", "round": 20, "sigma": 1.0, "timestamp": "2026-09-26T04:18:41.867630+00:00"}
+{"avg_loss": 0.7568541540441288, "event": "round_completed", "round": 1, "sigma": 1.5, "timestamp": "2026-09-26T04:22:55.924133+00:00"}
+{"avg_loss": 0.5992200224086491, "event": "round_completed", "round": 5, "sigma": 1.5, "timestamp": "2026-09-26T04:39:32.295917+00:00"}
+{"avg_loss": 0.5469941133601899, "event": "round_completed", "round": 10, "sigma": 1.5, "timestamp": "2026-09-26T05:00:12.168223+00:00"}
+{"avg_loss": 0.5266027013059417, "event": "round_completed", "round": 15, "sigma": 1.5, "timestamp": "2026-09-26T05:20:51.161787+00:00"}
+{"avg_loss": 0.5129581462052535, "event": "round_completed", "round": 20, "sigma": 1.5, "timestamp": "2026-09-26T05:41:45.589976+00:00"}
+{"avg_loss": 0.7284835874030886, "event": "round_completed", "round": 1, "sigma": 2.0, "timestamp": "2026-09-26T05:45:58.357836+00:00"}
+{"avg_loss": 0.6131326443819888, "event": "round_completed", "round": 5, "sigma": 2.0, "timestamp": "2026-09-26T06:02:38.564056+00:00"}
+{"avg_loss": 0.5614416029316809, "event": "round_completed", "round": 10, "sigma": 2.0, "timestamp": "2026-09-26T06:23:48.711075+00:00"}
+{"avg_loss": 0.5451914650021178, "event": "round_completed", "round": 15, "sigma": 2.0, "timestamp": "2026-09-26T06:44:41.469834+00:00"}
+{"avg_loss": 0.53516125076949, "event": "round_completed", "round": 20, "sigma": 2.0, "timestamp": "2026-09-26T07:05:02.851786+00:00"}
+{"completed_sigmas": [0.5, 1.0, 1.5, 2.0], "event": "e11_completed", "output_json": "/kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.json", "timestamp": "2026-09-26T07:05:10.027288+00:00"}

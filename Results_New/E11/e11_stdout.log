@@ -1,0 +1,888 @@
+17:13:54  INFO      Loading hospital training datasets and held-out test dataset...
+17:13:54  INFO      ================================================================
+17:13:54  INFO      E11 EXPERIMENTAL CONFIGURATION & DATASET AUDIT PRE-FLIGHT
+17:13:54  INFO      ================================================================
+17:13:54  INFO        Sigmas to evaluate     : [0.3, 0.5, 0.8, 1.0, 1.5, 2.0]
+17:13:54  INFO        Federated rounds       : 20
+17:13:54  INFO        Local epochs per round : 3
+17:13:54  INFO        Participating clients  : 3
+17:13:54  INFO        Batch size             : 8
+17:13:54  INFO        Clipping norm (C)      : 2.0
+17:13:54  INFO        DP Target delta        : 1e-05
+17:13:54  INFO        Learning rate          : 0.0001
+17:13:54  INFO        Compute Device         : cuda (CUDA available: True)
+17:13:54  INFO        --- Dataset Partition & Overlap Audit ---
+17:13:54  INFO          - Hospital 0 Train Samples: 264 (33 batches/epoch, q=0.0303)
+17:13:54  INFO          - Hospital 1 Train Samples: 263 (33 batches/epoch, q=0.0304)
+17:13:54  INFO          - Hospital 2 Train Samples: 262 (33 batches/epoch, q=0.0305)
+17:13:54  INFO          - Pairwise Overlaps       : H0-H1=35, H0-H2=38, H1-H2=39
+17:13:54  INFO          - Total Unique Records    : 679
+17:13:54  INFO          - Records in 1 Client     : 571 (84.1%)
+17:13:54  INFO          - Records in 2 Clients    : 106 (15.6%)
+17:13:54  INFO          - Records in 3 Clients    : 2 (0.3%)
+17:13:54  INFO          - Test Split Overlap      : 0 (STRICTLY DISJOINT)
+17:13:54  INFO        Combined Test Samples  : 107
+17:13:54  INFO        Expected DP Steps/Client: 1980
+17:13:54  INFO        Privacy Accounting     : Dynamic Overlap-Aware RDP Composition (Worst-Case on 3-Client Records)
+17:13:54  INFO        Save Checkpoints       : False
+17:13:54  INFO      ================================================================
+17:13:54  INFO      ================================================================
+17:13:54  INFO      Starting Federated DP-SGD Training for Sigma = 0.30 (Seed: 72)
+17:13:54  INFO      ================================================================
+/usr/local/lib/python3.12/dist-packages/opacus/privacy_engine.py:142: UserWarning: Secure RNG turned off. This is perfectly fine for experimentation as it allows for much faster training performance, but remember to turn it on and retrain one last time before production with ``secure_mode`` turned on.
+  warnings.warn(
+/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py:1830: FutureWarning: Using a non-full backward hook when the forward contains multiple autograd Nodes is deprecated and will be removed in future versions. This hook will be missing some grad_input. Please use register_full_backward_hook to get the documented behavior.
+  self._maybe_warn_non_full_backward_hook(args, result, grad_fn)
+17:17:55  INFO        [Round 01/20]  Sigma: 0.30  |  Avg Train Loss: 0.6126
+17:33:56  INFO        [Round 05/20]  Sigma: 0.30  |  Avg Train Loss: 0.5113
+17:53:42  INFO        [Round 10/20]  Sigma: 0.30  |  Avg Train Loss: 0.4836
+18:13:27  INFO        [Round 15/20]  Sigma: 0.30  |  Avg Train Loss: 0.4642
+18:33:18  INFO        [Round 20/20]  Sigma: 0.30  |  Avg Train Loss: 0.4534
+18:33:18  INFO      Training completed for Sigma = 0.30 in 4763.94s
+18:33:18  INFO      Evaluating trained model (Sigma = 0.30) on combined held-out test set...
+18:33:21  INFO        Results (Sigma=0.30): Dice=0.5129, IoU=0.3818, Precision=0.5213, Recall=0.6413
+/usr/local/lib/python3.12/dist-packages/opacus/accountants/analysis/rdp.py:332: UserWarning: Optimal order is the smallest alpha. Please consider expanding the range of alphas to get a tighter privacy bound.
+  warnings.warn(
+18:33:28  INFO        DP Accounting (delta=1e-05):
+18:33:28  INFO          - Per-Client Epsilon       : H0=292.9291, H1=293.8323, H2=294.7433
+18:33:28  INFO          - 1-Client Records (N=571) : eps = 294.7433
+18:33:28  INFO          - 2-Client Records (N=106) : eps = 476.7973
+18:33:28  INFO          - 3-Client Records (N=2)   : eps = 657.9482 (WORST-CASE)
+18:33:28  INFO          - Federation Worst-Case Epsilon : 657.9482
+18:33:28  INFO      ================================================================
+18:33:28  INFO      Starting Federated DP-SGD Training for Sigma = 0.50 (Seed: 92)
+18:33:28  INFO      ================================================================
+18:37:29  INFO        [Round 01/20]  Sigma: 0.50  |  Avg Train Loss: 0.6389
+18:53:25  INFO        [Round 05/20]  Sigma: 0.50  |  Avg Train Loss: 0.5208
+19:13:13  INFO        [Round 10/20]  Sigma: 0.50  |  Avg Train Loss: 0.4884
+19:15:23  ERROR     Error executing sigma = 0.50: zeros() received an invalid combination of arguments - got (tuple, dtype=type), but expected one of:
+ * (tuple of ints size, *, tuple of names names, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+ * (tuple of ints size, *, Tensor out = None, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+
+19:15:23  ERROR     Traceback (most recent call last):
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 810, in main
+    res = run_federated_dpsgd_sweep_single_sigma(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 307, in run_federated_dpsgd_sweep_single_sigma
+    updated_params, n_samples, steps_taken, avg_loss = train_dp_hospital_client(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 247, in train_dp_hospital_client
+    for images, masks, _ in train_loader:
+                            ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 708, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 764, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/_utils/fetch.py", line 55, in fetch
+    return self.collate_fn(data)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opacus/data_loader.py", line 56, in collate
+    torch.zeros(shape, dtype=dtype)
+TypeError: zeros() received an invalid combination of arguments - got (tuple, dtype=type), but expected one of:
+ * (tuple of ints size, *, tuple of names names, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+ * (tuple of ints size, *, Tensor out = None, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+
+
+19:15:23  INFO      ================================================================
+19:15:23  INFO      Starting Federated DP-SGD Training for Sigma = 0.80 (Seed: 122)
+19:15:23  INFO      ================================================================
+19:15:40  ERROR     Error executing sigma = 0.80: zeros() received an invalid combination of arguments - got (tuple, dtype=type), but expected one of:
+ * (tuple of ints size, *, tuple of names names, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+ * (tuple of ints size, *, Tensor out = None, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+
+19:15:40  ERROR     Traceback (most recent call last):
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 810, in main
+    res = run_federated_dpsgd_sweep_single_sigma(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 307, in run_federated_dpsgd_sweep_single_sigma
+    updated_params, n_samples, steps_taken, avg_loss = train_dp_hospital_client(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 247, in train_dp_hospital_client
+    for images, masks, _ in train_loader:
+                            ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 708, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 764, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/_utils/fetch.py", line 55, in fetch
+    return self.collate_fn(data)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opacus/data_loader.py", line 56, in collate
+    torch.zeros(shape, dtype=dtype)
+TypeError: zeros() received an invalid combination of arguments - got (tuple, dtype=type), but expected one of:
+ * (tuple of ints size, *, tuple of names names, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+ * (tuple of ints size, *, Tensor out = None, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+
+
+19:15:40  INFO      ================================================================
+19:15:40  INFO      Starting Federated DP-SGD Training for Sigma = 1.00 (Seed: 142)
+19:15:40  INFO      ================================================================
+19:19:30  INFO        [Round 01/20]  Sigma: 1.00  |  Avg Train Loss: 0.6675
+19:35:17  INFO        [Round 05/20]  Sigma: 1.00  |  Avg Train Loss: 0.5530
+19:36:47  ERROR     Error executing sigma = 1.00: zeros() received an invalid combination of arguments - got (tuple, dtype=type), but expected one of:
+ * (tuple of ints size, *, tuple of names names, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+ * (tuple of ints size, *, Tensor out = None, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+
+19:36:47  ERROR     Traceback (most recent call last):
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 810, in main
+    res = run_federated_dpsgd_sweep_single_sigma(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 307, in run_federated_dpsgd_sweep_single_sigma
+    updated_params, n_samples, steps_taken, avg_loss = train_dp_hospital_client(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 247, in train_dp_hospital_client
+    for images, masks, _ in train_loader:
+                            ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 708, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 764, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/_utils/fetch.py", line 55, in fetch
+    return self.collate_fn(data)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opacus/data_loader.py", line 56, in collate
+    torch.zeros(shape, dtype=dtype)
+TypeError: zeros() received an invalid combination of arguments - got (tuple, dtype=type), but expected one of:
+ * (tuple of ints size, *, tuple of names names, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+ * (tuple of ints size, *, Tensor out = None, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+
+
+19:36:47  INFO      ================================================================
+19:36:47  INFO      Starting Federated DP-SGD Training for Sigma = 1.50 (Seed: 192)
+19:36:47  INFO      ================================================================
+19:40:48  INFO        [Round 01/20]  Sigma: 1.50  |  Avg Train Loss: 0.7569
+19:56:40  INFO        [Round 05/20]  Sigma: 1.50  |  Avg Train Loss: 0.5992
+20:10:19  ERROR     Error executing sigma = 1.50: zeros() received an invalid combination of arguments - got (tuple, dtype=type), but expected one of:
+ * (tuple of ints size, *, tuple of names names, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+ * (tuple of ints size, *, Tensor out = None, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+
+20:10:19  ERROR     Traceback (most recent call last):
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 810, in main
+    res = run_federated_dpsgd_sweep_single_sigma(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 307, in run_federated_dpsgd_sweep_single_sigma
+    updated_params, n_samples, steps_taken, avg_loss = train_dp_hospital_client(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 247, in train_dp_hospital_client
+    for images, masks, _ in train_loader:
+                            ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 708, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 764, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/_utils/fetch.py", line 55, in fetch
+    return self.collate_fn(data)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opacus/data_loader.py", line 56, in collate
+    torch.zeros(shape, dtype=dtype)
+TypeError: zeros() received an invalid combination of arguments - got (tuple, dtype=type), but expected one of:
+ * (tuple of ints size, *, tuple of names names, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+ * (tuple of ints size, *, Tensor out = None, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+
+
+20:10:19  INFO      ================================================================
+20:10:19  INFO      Starting Federated DP-SGD Training for Sigma = 2.00 (Seed: 242)
+20:10:19  INFO      ================================================================
+20:14:14  INFO        [Round 01/20]  Sigma: 2.00  |  Avg Train Loss: 0.7285
+20:30:12  INFO        [Round 05/20]  Sigma: 2.00  |  Avg Train Loss: 0.6131
+20:48:02  ERROR     Error executing sigma = 2.00: zeros() received an invalid combination of arguments - got (tuple, dtype=type), but expected one of:
+ * (tuple of ints size, *, tuple of names names, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+ * (tuple of ints size, *, Tensor out = None, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+
+20:48:02  ERROR     Traceback (most recent call last):
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 810, in main
+    res = run_federated_dpsgd_sweep_single_sigma(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 307, in run_federated_dpsgd_sweep_single_sigma
+    updated_params, n_samples, steps_taken, avg_loss = train_dp_hospital_client(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 247, in train_dp_hospital_client
+    for images, masks, _ in train_loader:
+                            ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 708, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 764, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/_utils/fetch.py", line 55, in fetch
+    return self.collate_fn(data)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opacus/data_loader.py", line 56, in collate
+    torch.zeros(shape, dtype=dtype)
+TypeError: zeros() received an invalid combination of arguments - got (tuple, dtype=type), but expected one of:
+ * (tuple of ints size, *, tuple of names names, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+ * (tuple of ints size, *, Tensor out = None, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+
+
+20:48:02  INFO      Results written to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.json and /kaggle/working/SDFL/Results_New/E11/e11_privacy_results.json
+20:48:02  INFO      CSV results written to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.csv
+20:48:02  INFO      Markdown report generated at /kaggle/working/SDFL/Results_New/E11/E11_RESULTS.md
+/usr/local/lib/python3.12/dist-packages/matplotlib/_fontconfig_pattern.py:88: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+  parse = parser.parseString(pattern)
+/usr/local/lib/python3.12/dist-packages/matplotlib/_fontconfig_pattern.py:92: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+  parser.resetCache()
+/usr/local/lib/python3.12/dist-packages/matplotlib/_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+  ParserElement.enablePackrat()
+09/23/2026 20:48:03:WARNING:In /usr/local/lib/python3.12/dist-packages/matplotlib/mpl-data/stylelib/classic.mplstyle: 'parseString' deprecated - use 'parse_string'
+09/23/2026 20:48:03:WARNING:In /usr/local/lib/python3.12/dist-packages/matplotlib/mpl-data/stylelib/classic.mplstyle: 'resetCache' deprecated - use 'reset_cache'
+/usr/local/lib/python3.12/dist-packages/matplotlib/_fontconfig_pattern.py:88: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+  parse = parser.parseString(pattern)
+/usr/local/lib/python3.12/dist-packages/matplotlib/_fontconfig_pattern.py:92: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+  parser.resetCache()
+/usr/local/lib/python3.12/dist-packages/matplotlib/_mathtext.py:2010: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+  p.space          = oneOf(self._space_widths)("space")
+/usr/local/lib/python3.12/dist-packages/matplotlib/_mathtext.py:2020: PyparsingDeprecationWarning: 'leaveWhitespace' deprecated - use 'leave_whitespace'
+  )("sym").leaveWhitespace()
+/usr/local/lib/python3.12/dist-packages/matplotlib/_mathtext.py:1984: PyparsingDeprecationWarning: 'setName' deprecated - use 'set_name'
+  val.setName(key)
+/usr/local/lib/python3.12/dist-packages/matplotlib/_mathtext.py:1987: PyparsingDeprecationWarning: 'setParseAction' deprecated - use 'set_parse_action'
+  val.setParseAction(getattr(self, key))
+/usr/local/lib/python3.12/dist-packages/matplotlib/_mathtext.py:2080: PyparsingDeprecationWarning: 'endQuoteChar' argument is deprecated, use 'end_quote_char'
+  p.text = cmd(r"\text", QuotedString('{', '\\', endQuoteChar="}"))
+/usr/local/lib/python3.12/dist-packages/matplotlib/_mathtext.py:2138: PyparsingDeprecationWarning: 'unquoteResults' argument is deprecated, use 'unquote_results'
+  p.math_string   = QuotedString('$', '\\', unquoteResults=False)
+/usr/local/lib/python3.12/dist-packages/matplotlib/_mathtext.py:2162: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+  result = self._expression.parseString(s)
+/usr/local/lib/python3.12/dist-packages/pyparsing/util.py:466: PyparsingDeprecationWarning: 'parseAll' argument is deprecated, use 'parse_all'
+  return fn(self, *args, **kwargs)
+/usr/local/lib/python3.12/dist-packages/matplotlib/_mathtext.py:2170: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+  ParserElement.resetCache()
+20:48:06  INFO      Figures saved to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility.png and /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility.pdf
+20:48:06  INFO      ================================================================
+20:48:06  INFO      E11 Empirical Privacy-Utility Sweep Complete!
+20:48:06  INFO      ================================================================
+17:02:16  INFO      Executing Smoke Test configuration...
+17:02:16  INFO      Loading hospital training datasets and held-out test dataset...
+17:02:16  INFO      ================================================================
+17:02:16  INFO      E11 EXPERIMENTAL CONFIGURATION & DATASET AUDIT PRE-FLIGHT
+17:02:16  INFO      ================================================================
+17:02:16  INFO        Sigmas to evaluate     : [1.0]
+17:02:16  INFO        Federated rounds       : 1
+17:02:16  INFO        Local epochs per round : 1
+17:02:16  INFO        Participating clients  : 3
+17:02:16  INFO        Batch size             : 8
+17:02:16  INFO        Clipping norm (C)      : 2.0
+17:02:16  INFO        DP Target delta        : 1e-05
+17:02:16  INFO        Learning rate          : 0.0001
+17:02:16  INFO        Compute Device         : cuda (CUDA available: True)
+17:02:16  INFO        --- Dataset Partition & Overlap Audit ---
+17:02:16  INFO          - Hospital 0 Train Samples: 264 (33 batches/epoch, q=0.0303)
+17:02:16  INFO          - Hospital 1 Train Samples: 263 (33 batches/epoch, q=0.0304)
+17:02:16  INFO          - Hospital 2 Train Samples: 262 (33 batches/epoch, q=0.0305)
+17:02:16  INFO          - Pairwise Overlaps       : H0-H1=35, H0-H2=38, H1-H2=39
+17:02:16  INFO          - Total Unique Records    : 679
+17:02:16  INFO          - Records in 1 Client     : 571 (84.1%)
+17:02:16  INFO          - Records in 2 Clients    : 106 (15.6%)
+17:02:16  INFO          - Records in 3 Clients    : 2 (0.3%)
+17:02:16  INFO          - Test Split Overlap      : 0 (STRICTLY DISJOINT)
+17:02:16  INFO        Combined Test Samples  : 107
+17:02:16  INFO        Expected DP Steps/Client: 33
+17:02:16  INFO        Privacy Accounting     : Dynamic Overlap-Aware RDP Composition (Worst-Case on 3-Client Records)
+17:02:16  INFO        Save Checkpoints       : False
+17:02:16  INFO      ================================================================
+17:02:16  INFO      ================================================================
+17:02:16  INFO      Starting Federated DP-SGD Training for Sigma = 1.00 (Seed: 142)
+17:02:16  INFO      ================================================================
+17:03:36  INFO        [Round 01/01]  Sigma: 1.00  |  Avg Train Loss: 0.7321
+17:03:36  INFO      Training completed for Sigma = 1.00 in 79.37s
+17:03:36  INFO      Evaluating trained model (Sigma = 1.00) on combined held-out test set...
+17:03:39  INFO        Results (Sigma=1.00): Dice=0.2033, IoU=0.1213, Precision=0.2372, Recall=0.2405
+17:03:40  INFO        DP Accounting (delta=1e-05):
+17:03:40  INFO          - Per-Client Epsilon       : H0=1.9473, H1=1.9525, H2=1.9577
+17:03:40  INFO          - 1-Client Records (N=571) : eps = 1.9577
+17:03:40  INFO          - 2-Client Records (N=106) : eps = 2.2916
+17:03:40  INFO          - 3-Client Records (N=2)   : eps = 2.5700 (WORST-CASE)
+17:03:40  INFO          - Federation Worst-Case Epsilon : 2.5700
+17:03:40  INFO      Results written to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.json and /kaggle/working/SDFL/Results_New/E11/e11_privacy_results.json
+17:03:40  INFO      CSV results written to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.csv
+17:03:40  INFO      Markdown report generated at /kaggle/working/SDFL/Results_New/E11/E11_RESULTS.md
+17:03:44  INFO      Figures saved to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility.png and /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility.pdf
+17:03:44  INFO      ================================================================
+17:03:44  INFO      E11 Empirical Privacy-Utility Sweep Complete!
+17:03:44  INFO      ================================================================
+17:03:50  INFO      Loading hospital training datasets and held-out test dataset...
+17:03:50  INFO      ================================================================
+17:03:50  INFO      E11 EXPERIMENTAL CONFIGURATION & DATASET AUDIT PRE-FLIGHT
+17:03:50  INFO      ================================================================
+17:03:50  INFO        Sigmas to evaluate     : [0.5, 1.0, 1.5, 2.0]
+17:03:50  INFO        Federated rounds       : 20
+17:03:50  INFO        Local epochs per round : 3
+17:03:50  INFO        Participating clients  : 3
+17:03:50  INFO        Batch size             : 8
+17:03:50  INFO        Clipping norm (C)      : 2.0
+17:03:50  INFO        DP Target delta        : 1e-05
+17:03:50  INFO        Learning rate          : 0.0001
+17:03:50  INFO        Compute Device         : cuda (CUDA available: True)
+17:03:50  INFO        --- Dataset Partition & Overlap Audit ---
+17:03:50  INFO          - Hospital 0 Train Samples: 264 (33 batches/epoch, q=0.0303)
+17:03:50  INFO          - Hospital 1 Train Samples: 263 (33 batches/epoch, q=0.0304)
+17:03:50  INFO          - Hospital 2 Train Samples: 262 (33 batches/epoch, q=0.0305)
+17:03:50  INFO          - Pairwise Overlaps       : H0-H1=35, H0-H2=38, H1-H2=39
+17:03:50  INFO          - Total Unique Records    : 679
+17:03:50  INFO          - Records in 1 Client     : 571 (84.1%)
+17:03:50  INFO          - Records in 2 Clients    : 106 (15.6%)
+17:03:50  INFO          - Records in 3 Clients    : 2 (0.3%)
+17:03:50  INFO          - Test Split Overlap      : 0 (STRICTLY DISJOINT)
+17:03:50  INFO        Combined Test Samples  : 107
+17:03:50  INFO        Expected DP Steps/Client: 1980
+17:03:50  INFO        Privacy Accounting     : Dynamic Overlap-Aware RDP Composition (Worst-Case on 3-Client Records)
+17:03:50  INFO        Save Checkpoints       : True
+17:03:50  INFO      ================================================================
+17:03:50  INFO      ================================================================
+17:03:50  INFO      Starting Federated DP-SGD Training for Sigma = 0.50 (Seed: 92)
+17:03:50  INFO      ================================================================
+17:07:50  INFO        [Round 01/20]  Sigma: 0.50  |  Avg Train Loss: 0.6389
+17:23:39  INFO        [Round 05/20]  Sigma: 0.50  |  Avg Train Loss: 0.5208
+17:43:23  INFO        [Round 10/20]  Sigma: 0.50  |  Avg Train Loss: 0.4884
+17:45:33  ERROR     Error executing sigma = 0.50: name 'self' is not defined
+17:45:33  ERROR     Traceback (most recent call last):
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 832, in main
+    res = run_federated_dpsgd_sweep_single_sigma(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 329, in run_federated_dpsgd_sweep_single_sigma
+    updated_params, n_samples, steps_taken, avg_loss = train_dp_hospital_client(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 266, in train_dp_hospital_client
+    for images, masks in train_loader:
+                         ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 708, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 764, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/_utils/fetch.py", line 55, in fetch
+    return self.collate_fn(data)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opacus/data_loader.py", line 62, in collate
+    for p in self.dataset[0].values()
+             ^^^^
+NameError: name 'self' is not defined
+
+17:45:33  INFO      ================================================================
+17:45:33  INFO      Starting Federated DP-SGD Training for Sigma = 1.00 (Seed: 142)
+17:45:33  INFO      ================================================================
+17:49:21  INFO        [Round 01/20]  Sigma: 1.00  |  Avg Train Loss: 0.6675
+18:04:58  INFO        [Round 05/20]  Sigma: 1.00  |  Avg Train Loss: 0.5530
+18:06:27  ERROR     Error executing sigma = 1.00: name 'self' is not defined
+18:06:27  ERROR     Traceback (most recent call last):
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 832, in main
+    res = run_federated_dpsgd_sweep_single_sigma(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 329, in run_federated_dpsgd_sweep_single_sigma
+    updated_params, n_samples, steps_taken, avg_loss = train_dp_hospital_client(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 266, in train_dp_hospital_client
+    for images, masks in train_loader:
+                         ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 708, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 764, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/_utils/fetch.py", line 55, in fetch
+    return self.collate_fn(data)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opacus/data_loader.py", line 62, in collate
+    for p in self.dataset[0].values()
+             ^^^^
+NameError: name 'self' is not defined
+
+18:06:27  INFO      ================================================================
+18:06:27  INFO      Starting Federated DP-SGD Training for Sigma = 1.50 (Seed: 192)
+18:06:27  INFO      ================================================================
+18:10:26  INFO        [Round 01/20]  Sigma: 1.50  |  Avg Train Loss: 0.7569
+18:26:08  INFO        [Round 05/20]  Sigma: 1.50  |  Avg Train Loss: 0.5992
+18:39:37  ERROR     Error executing sigma = 1.50: name 'self' is not defined
+18:39:37  ERROR     Traceback (most recent call last):
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 832, in main
+    res = run_federated_dpsgd_sweep_single_sigma(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 329, in run_federated_dpsgd_sweep_single_sigma
+    updated_params, n_samples, steps_taken, avg_loss = train_dp_hospital_client(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 266, in train_dp_hospital_client
+    for images, masks in train_loader:
+                         ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 708, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 764, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/_utils/fetch.py", line 55, in fetch
+    return self.collate_fn(data)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opacus/data_loader.py", line 62, in collate
+    for p in self.dataset[0].values()
+             ^^^^
+NameError: name 'self' is not defined
+
+18:39:37  INFO      ================================================================
+18:39:37  INFO      Starting Federated DP-SGD Training for Sigma = 2.00 (Seed: 242)
+18:39:37  INFO      ================================================================
+18:43:30  INFO        [Round 01/20]  Sigma: 2.00  |  Avg Train Loss: 0.7285
+18:59:25  INFO        [Round 05/20]  Sigma: 2.00  |  Avg Train Loss: 0.6131
+19:17:12  ERROR     Error executing sigma = 2.00: name 'self' is not defined
+19:17:12  ERROR     Traceback (most recent call last):
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 832, in main
+    res = run_federated_dpsgd_sweep_single_sigma(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 329, in run_federated_dpsgd_sweep_single_sigma
+    updated_params, n_samples, steps_taken, avg_loss = train_dp_hospital_client(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 266, in train_dp_hospital_client
+    for images, masks in train_loader:
+                         ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 708, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 764, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/_utils/fetch.py", line 55, in fetch
+    return self.collate_fn(data)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opacus/data_loader.py", line 62, in collate
+    for p in self.dataset[0].values()
+             ^^^^
+NameError: name 'self' is not defined
+
+19:17:12  INFO      Results written to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.json and /kaggle/working/SDFL/Results_New/E11/e11_privacy_results.json
+19:17:12  INFO      CSV results written to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.csv
+19:17:12  INFO      Markdown report generated at /kaggle/working/SDFL/Results_New/E11/E11_RESULTS.md
+19:17:12  WARNING   No completed runs to plot.
+19:17:12  INFO      ================================================================
+19:17:12  INFO      E11 Empirical Privacy-Utility Sweep Complete!
+19:17:12  INFO      ================================================================
+04:31:37  INFO      Executing Smoke Test configuration...
+04:31:37  INFO      Loading hospital training datasets and held-out test dataset...
+04:31:37  INFO      ================================================================
+04:31:37  INFO      E11 EXPERIMENTAL CONFIGURATION & DATASET AUDIT PRE-FLIGHT
+04:31:37  INFO      ================================================================
+04:31:37  INFO        Sigmas to evaluate     : [1.0]
+04:31:37  INFO        Federated rounds       : 1
+04:31:37  INFO        Local epochs per round : 1
+04:31:37  INFO        Participating clients  : 3
+04:31:37  INFO        Batch size             : 8
+04:31:37  INFO        Clipping norm (C)      : 2.0
+04:31:37  INFO        DP Target delta        : 1e-05
+04:31:37  INFO        Learning rate          : 0.0001
+04:31:37  INFO        Compute Device         : cuda (CUDA available: True)
+04:31:37  INFO        --- Dataset Partition & Overlap Audit ---
+04:31:37  INFO          - Hospital 0 Train Samples: 264 (33 batches/epoch, q=0.0303)
+04:31:37  INFO          - Hospital 1 Train Samples: 263 (33 batches/epoch, q=0.0304)
+04:31:37  INFO          - Hospital 2 Train Samples: 262 (33 batches/epoch, q=0.0305)
+04:31:37  INFO          - Pairwise Overlaps       : H0-H1=35, H0-H2=38, H1-H2=39
+04:31:37  INFO          - Total Unique Records    : 679
+04:31:37  INFO          - Records in 1 Client     : 571 (84.1%)
+04:31:37  INFO          - Records in 2 Clients    : 106 (15.6%)
+04:31:37  INFO          - Records in 3 Clients    : 2 (0.3%)
+04:31:37  INFO          - Test Split Overlap      : 0 (STRICTLY DISJOINT)
+04:31:37  INFO        Combined Test Samples  : 107
+04:31:37  INFO        Expected DP Steps/Client: 33
+04:31:37  INFO        Privacy Accounting     : Dynamic Overlap-Aware RDP Composition (Worst-Case on 3-Client Records)
+04:31:37  INFO        Save Checkpoints       : False
+04:31:37  INFO      ================================================================
+04:31:37  INFO      ================================================================
+04:31:37  INFO      Starting Federated DP-SGD Training for Sigma = 1.00 (Seed: 142)
+04:31:37  INFO      ================================================================
+04:33:09  INFO        [Round 01/01]  Sigma: 1.00  |  Avg Train Loss: 0.7321
+04:33:09  INFO      Training completed for Sigma = 1.00 in 91.87s
+04:33:09  INFO      Evaluating trained model (Sigma = 1.00) on combined held-out test set...
+04:33:13  INFO        Results (Sigma=1.00): Dice=0.2033, IoU=0.1213, Precision=0.2372, Recall=0.2405
+04:33:14  INFO        DP Accounting (delta=1e-05):
+04:33:14  INFO          - Per-Client Epsilon       : H0=1.9473, H1=1.9525, H2=1.9577
+04:33:14  INFO          - 1-Client Records (N=571) : eps = 1.9577
+04:33:14  INFO          - 2-Client Records (N=106) : eps = 2.2916
+04:33:14  INFO          - 3-Client Records (N=2)   : eps = 2.5700 (WORST-CASE)
+04:33:14  INFO          - Federation Worst-Case Epsilon : 2.5700
+04:33:14  INFO      Results written to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.json and /kaggle/working/SDFL/Results_New/E11/e11_privacy_results.json
+04:33:14  INFO      CSV results written to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.csv
+04:33:14  INFO      Markdown report generated at /kaggle/working/SDFL/Results_New/E11/E11_RESULTS.md
+04:33:19  INFO      Figures saved to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility.png and /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility.pdf
+04:33:19  INFO      ================================================================
+04:33:19  INFO      E11 Empirical Privacy-Utility Sweep Complete!
+04:33:19  INFO      ================================================================
+04:33:27  INFO      Loading hospital training datasets and held-out test dataset...
+04:33:27  INFO      ================================================================
+04:33:27  INFO      E11 EXPERIMENTAL CONFIGURATION & DATASET AUDIT PRE-FLIGHT
+04:33:27  INFO      ================================================================
+04:33:27  INFO        Sigmas to evaluate     : [0.5, 1.0, 1.5, 2.0]
+04:33:27  INFO        Federated rounds       : 20
+04:33:27  INFO        Local epochs per round : 3
+04:33:27  INFO        Participating clients  : 3
+04:33:27  INFO        Batch size             : 8
+04:33:27  INFO        Clipping norm (C)      : 2.0
+04:33:27  INFO        DP Target delta        : 1e-05
+04:33:27  INFO        Learning rate          : 0.0001
+04:33:27  INFO        Compute Device         : cuda:0 (CUDA available: True)
+04:33:27  INFO        --- Dataset Partition & Overlap Audit ---
+04:33:27  INFO          - Hospital 0 Train Samples: 264 (33 batches/epoch, q=0.0303)
+04:33:27  INFO          - Hospital 1 Train Samples: 263 (33 batches/epoch, q=0.0304)
+04:33:27  INFO          - Hospital 2 Train Samples: 262 (33 batches/epoch, q=0.0305)
+04:33:27  INFO          - Pairwise Overlaps       : H0-H1=35, H0-H2=38, H1-H2=39
+04:33:27  INFO          - Total Unique Records    : 679
+04:33:27  INFO          - Records in 1 Client     : 571 (84.1%)
+04:33:27  INFO          - Records in 2 Clients    : 106 (15.6%)
+04:33:27  INFO          - Records in 3 Clients    : 2 (0.3%)
+04:33:27  INFO          - Test Split Overlap      : 0 (STRICTLY DISJOINT)
+04:33:27  INFO        Combined Test Samples  : 107
+04:33:27  INFO        Expected DP Steps/Client: 1980
+04:33:27  INFO        Privacy Accounting     : Dynamic Overlap-Aware RDP Composition (Worst-Case on 3-Client Records)
+04:33:27  INFO        Save Checkpoints       : True
+04:33:27  INFO      ================================================================
+04:33:27  INFO      ================================================================
+04:33:27  INFO      Starting Federated DP-SGD Training for Sigma = 0.50 (Seed: 92)
+04:33:27  INFO      ================================================================
+04:38:07  INFO        [Round 01/20]  Sigma: 0.50  |  Avg Train Loss: 0.6389
+04:56:09  INFO        [Round 05/20]  Sigma: 0.50  |  Avg Train Loss: 0.5208
+05:19:09  INFO        [Round 10/20]  Sigma: 0.50  |  Avg Train Loss: 0.4884
+05:21:39  ERROR     Error executing sigma = 0.50: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat2 in method wrapper_CUDA_mm)
+05:21:39  ERROR     Traceback (most recent call last):
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 882, in main
+    res = run_federated_dpsgd_sweep_single_sigma(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 376, in run_federated_dpsgd_sweep_single_sigma
+    updated_params, n_samples, steps_taken, avg_loss = train_dp_hospital_client(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 319, in train_dp_hospital_client
+    raise e
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 313, in train_dp_hospital_client
+    optimizer.step()
+  File "/usr/local/lib/python3.12/dist-packages/opacus/optimizers/optimizer.py", line 513, in step
+    if self.pre_step():
+       ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opacus/optimizers/optimizer.py", line 494, in pre_step
+    self.clip_and_accumulate()
+  File "/usr/local/lib/python3.12/dist-packages/opacus/optimizers/optimizer.py", line 412, in clip_and_accumulate
+    grad = contract("i,i...", per_sample_clip_factor, grad_sample)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/contract.py", line 603, in contract
+    return _core_contract(operands, contraction_list, backend=backend, out=out, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/contract.py", line 687, in _core_contract
+    new_view = _tensordot(*tmp_operands, axes=axes, backend=backend, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/sharing.py", line 140, in cached_tensordot
+    return tensordot(x, y, axes, backend=backend)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/contract.py", line 470, in _tensordot
+    return fn(x, y, axes=axes)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/backends/torch.py", line 56, in tensordot
+    return torch.tensordot(x, y, dims=axes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/functional.py", line 1360, in tensordot
+    return _VF.tensordot(a, b, dims_a, dims_b)  # type: ignore[attr-defined]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat2 in method wrapper_CUDA_mm)
+
+05:21:39  INFO      ================================================================
+05:21:39  INFO      Starting Federated DP-SGD Training for Sigma = 1.00 (Seed: 142)
+05:21:39  INFO      ================================================================
+05:26:05  INFO        [Round 01/20]  Sigma: 1.00  |  Avg Train Loss: 0.6675
+05:43:26  INFO        [Round 05/20]  Sigma: 1.00  |  Avg Train Loss: 0.5530
+05:45:04  ERROR     Error executing sigma = 1.00: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat2 in method wrapper_CUDA_mm)
+05:45:04  ERROR     Traceback (most recent call last):
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 882, in main
+    res = run_federated_dpsgd_sweep_single_sigma(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 376, in run_federated_dpsgd_sweep_single_sigma
+    updated_params, n_samples, steps_taken, avg_loss = train_dp_hospital_client(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 319, in train_dp_hospital_client
+    raise e
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 313, in train_dp_hospital_client
+    optimizer.step()
+  File "/usr/local/lib/python3.12/dist-packages/opacus/optimizers/optimizer.py", line 513, in step
+    if self.pre_step():
+       ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opacus/optimizers/optimizer.py", line 494, in pre_step
+    self.clip_and_accumulate()
+  File "/usr/local/lib/python3.12/dist-packages/opacus/optimizers/optimizer.py", line 412, in clip_and_accumulate
+    grad = contract("i,i...", per_sample_clip_factor, grad_sample)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/contract.py", line 603, in contract
+    return _core_contract(operands, contraction_list, backend=backend, out=out, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/contract.py", line 687, in _core_contract
+    new_view = _tensordot(*tmp_operands, axes=axes, backend=backend, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/sharing.py", line 140, in cached_tensordot
+    return tensordot(x, y, axes, backend=backend)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/contract.py", line 470, in _tensordot
+    return fn(x, y, axes=axes)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/backends/torch.py", line 56, in tensordot
+    return torch.tensordot(x, y, dims=axes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/functional.py", line 1360, in tensordot
+    return _VF.tensordot(a, b, dims_a, dims_b)  # type: ignore[attr-defined]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat2 in method wrapper_CUDA_mm)
+
+05:45:04  INFO      ================================================================
+05:45:04  INFO      Starting Federated DP-SGD Training for Sigma = 1.50 (Seed: 192)
+05:45:04  INFO      ================================================================
+05:49:27  INFO        [Round 01/20]  Sigma: 1.50  |  Avg Train Loss: 0.7569
+06:06:57  INFO        [Round 05/20]  Sigma: 1.50  |  Avg Train Loss: 0.5992
+06:21:25  ERROR     Error executing sigma = 1.50: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat2 in method wrapper_CUDA_mm)
+06:21:25  ERROR     Traceback (most recent call last):
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 882, in main
+    res = run_federated_dpsgd_sweep_single_sigma(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 376, in run_federated_dpsgd_sweep_single_sigma
+    updated_params, n_samples, steps_taken, avg_loss = train_dp_hospital_client(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 319, in train_dp_hospital_client
+    raise e
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 313, in train_dp_hospital_client
+    optimizer.step()
+  File "/usr/local/lib/python3.12/dist-packages/opacus/optimizers/optimizer.py", line 513, in step
+    if self.pre_step():
+       ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opacus/optimizers/optimizer.py", line 494, in pre_step
+    self.clip_and_accumulate()
+  File "/usr/local/lib/python3.12/dist-packages/opacus/optimizers/optimizer.py", line 412, in clip_and_accumulate
+    grad = contract("i,i...", per_sample_clip_factor, grad_sample)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/contract.py", line 603, in contract
+    return _core_contract(operands, contraction_list, backend=backend, out=out, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/contract.py", line 687, in _core_contract
+    new_view = _tensordot(*tmp_operands, axes=axes, backend=backend, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/sharing.py", line 140, in cached_tensordot
+    return tensordot(x, y, axes, backend=backend)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/contract.py", line 470, in _tensordot
+    return fn(x, y, axes=axes)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/backends/torch.py", line 56, in tensordot
+    return torch.tensordot(x, y, dims=axes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/functional.py", line 1360, in tensordot
+    return _VF.tensordot(a, b, dims_a, dims_b)  # type: ignore[attr-defined]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat2 in method wrapper_CUDA_mm)
+
+06:21:25  INFO      ================================================================
+06:21:25  INFO      Starting Federated DP-SGD Training for Sigma = 2.00 (Seed: 242)
+06:21:25  INFO      ================================================================
+06:25:37  INFO        [Round 01/20]  Sigma: 2.00  |  Avg Train Loss: 0.7285
+06:42:49  INFO        [Round 05/20]  Sigma: 2.00  |  Avg Train Loss: 0.6131
+07:01:45  ERROR     Error executing sigma = 2.00: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat2 in method wrapper_CUDA_mm)
+07:01:45  ERROR     Traceback (most recent call last):
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 882, in main
+    res = run_federated_dpsgd_sweep_single_sigma(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 376, in run_federated_dpsgd_sweep_single_sigma
+    updated_params, n_samples, steps_taken, avg_loss = train_dp_hospital_client(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 319, in train_dp_hospital_client
+    raise e
+  File "/kaggle/working/SDFL/e11_privacy_utility.py", line 313, in train_dp_hospital_client
+    optimizer.step()
+  File "/usr/local/lib/python3.12/dist-packages/opacus/optimizers/optimizer.py", line 513, in step
+    if self.pre_step():
+       ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opacus/optimizers/optimizer.py", line 494, in pre_step
+    self.clip_and_accumulate()
+  File "/usr/local/lib/python3.12/dist-packages/opacus/optimizers/optimizer.py", line 412, in clip_and_accumulate
+    grad = contract("i,i...", per_sample_clip_factor, grad_sample)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/contract.py", line 603, in contract
+    return _core_contract(operands, contraction_list, backend=backend, out=out, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/contract.py", line 687, in _core_contract
+    new_view = _tensordot(*tmp_operands, axes=axes, backend=backend, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/sharing.py", line 140, in cached_tensordot
+    return tensordot(x, y, axes, backend=backend)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/contract.py", line 470, in _tensordot
+    return fn(x, y, axes=axes)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/opt_einsum/backends/torch.py", line 56, in tensordot
+    return torch.tensordot(x, y, dims=axes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/functional.py", line 1360, in tensordot
+    return _VF.tensordot(a, b, dims_a, dims_b)  # type: ignore[attr-defined]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat2 in method wrapper_CUDA_mm)
+
+07:01:45  INFO      Results written to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.json and /kaggle/working/SDFL/Results_New/E11/e11_privacy_results.json
+07:01:45  INFO      CSV results written to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.csv
+07:01:45  INFO      Markdown report generated at /kaggle/working/SDFL/Results_New/E11/E11_RESULTS.md
+07:01:45  WARNING   No completed runs to plot.
+07:01:45  INFO      ================================================================
+07:01:45  INFO      E11 Empirical Privacy-Utility Sweep Complete!
+07:01:45  INFO      ================================================================
+01:29:44  INFO      Executing Smoke Test configuration...
+01:29:44  INFO      Loading hospital training datasets and held-out test dataset...
+01:29:44  INFO      ================================================================
+01:29:44  INFO      E11 EXPERIMENTAL CONFIGURATION & DATASET AUDIT PRE-FLIGHT
+01:29:44  INFO      ================================================================
+01:29:44  INFO        Sigmas to evaluate     : [1.0]
+01:29:44  INFO        Federated rounds       : 1
+01:29:44  INFO        Local epochs per round : 1
+01:29:44  INFO        Participating clients  : 3
+01:29:44  INFO        Batch size             : 8
+01:29:44  INFO        Clipping norm (C)      : 2.0
+01:29:44  INFO        DP Target delta        : 1e-05
+01:29:44  INFO        Learning rate          : 0.0001
+01:29:44  INFO        Compute Device         : cuda (CUDA available: True)
+01:29:44  INFO        --- Dataset Partition & Overlap Audit ---
+01:29:44  INFO          - Hospital 0 Train Samples: 264 (33 batches/epoch, q=0.0303)
+01:29:44  INFO          - Hospital 1 Train Samples: 263 (33 batches/epoch, q=0.0304)
+01:29:44  INFO          - Hospital 2 Train Samples: 262 (33 batches/epoch, q=0.0305)
+01:29:44  INFO          - Pairwise Overlaps       : H0-H1=35, H0-H2=38, H1-H2=39
+01:29:44  INFO          - Total Unique Records    : 679
+01:29:44  INFO          - Records in 1 Client     : 571 (84.1%)
+01:29:44  INFO          - Records in 2 Clients    : 106 (15.6%)
+01:29:44  INFO          - Records in 3 Clients    : 2 (0.3%)
+01:29:44  INFO          - Test Split Overlap      : 0 (STRICTLY DISJOINT)
+01:29:44  INFO        Combined Test Samples  : 107
+01:29:44  INFO        Expected DP Steps/Client: 33
+01:29:44  INFO        Privacy Accounting     : Dynamic Overlap-Aware RDP Composition (Worst-Case on 3-Client Records)
+01:29:44  INFO        Save Checkpoints       : False
+01:29:44  INFO      ================================================================
+01:29:44  INFO      ================================================================
+01:29:44  INFO      Starting Federated DP-SGD Training for Sigma = 1.00 (Seed: 142)
+01:29:44  INFO      ================================================================
+01:31:11  INFO        [Round 01/01]  Sigma: 1.00  |  Avg Train Loss: 0.7321
+01:31:11  INFO      Training completed for Sigma = 1.00 in 85.74s
+01:31:11  INFO      Evaluating trained model (Sigma = 1.00) on combined held-out test set...
+01:31:14  INFO        Results (Sigma=1.00): Dice=0.2033, IoU=0.1213, Precision=0.2372, Recall=0.2405
+01:31:15  INFO        DP Accounting (delta=1e-05):
+01:31:15  INFO          - Per-Client Epsilon       : H0=1.9473, H1=1.9525, H2=1.9577
+01:31:15  INFO          - 1-Client Records (N=571) : eps = 1.9577
+01:31:15  INFO          - 2-Client Records (N=106) : eps = 2.2916
+01:31:15  INFO          - 3-Client Records (N=2)   : eps = 2.5700 (WORST-CASE)
+01:31:15  INFO          - Federation Worst-Case Epsilon : 2.5700
+01:31:15  INFO      Results written to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.json and /kaggle/working/SDFL/Results_New/E11/e11_privacy_results.json
+01:31:15  INFO      CSV results written to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.csv
+01:31:15  INFO      Markdown report generated at /kaggle/working/SDFL/Results_New/E11/E11_RESULTS.md
+01:31:19  INFO      Figures saved to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility.png and /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility.pdf
+01:31:19  INFO      ================================================================
+01:31:19  INFO      E11 Empirical Privacy-Utility Sweep Complete!
+01:31:19  INFO      ================================================================
+01:31:27  INFO      Loading hospital training datasets and held-out test dataset...
+01:31:27  INFO      ================================================================
+01:31:27  INFO      E11 EXPERIMENTAL CONFIGURATION & DATASET AUDIT PRE-FLIGHT
+01:31:27  INFO      ================================================================
+01:31:27  INFO        Sigmas to evaluate     : [0.5, 1.0, 1.5, 2.0]
+01:31:27  INFO        Federated rounds       : 20
+01:31:27  INFO        Local epochs per round : 3
+01:31:27  INFO        Participating clients  : 3
+01:31:27  INFO        Batch size             : 8
+01:31:27  INFO        Clipping norm (C)      : 2.0
+01:31:27  INFO        DP Target delta        : 1e-05
+01:31:27  INFO        Learning rate          : 0.0001
+01:31:27  INFO        Compute Device         : cuda:0 (CUDA available: True)
+01:31:27  INFO        --- Dataset Partition & Overlap Audit ---
+01:31:27  INFO          - Hospital 0 Train Samples: 264 (33 batches/epoch, q=0.0303)
+01:31:27  INFO          - Hospital 1 Train Samples: 263 (33 batches/epoch, q=0.0304)
+01:31:27  INFO          - Hospital 2 Train Samples: 262 (33 batches/epoch, q=0.0305)
+01:31:27  INFO          - Pairwise Overlaps       : H0-H1=35, H0-H2=38, H1-H2=39
+01:31:27  INFO          - Total Unique Records    : 679
+01:31:27  INFO          - Records in 1 Client     : 571 (84.1%)
+01:31:27  INFO          - Records in 2 Clients    : 106 (15.6%)
+01:31:27  INFO          - Records in 3 Clients    : 2 (0.3%)
+01:31:27  INFO          - Test Split Overlap      : 0 (STRICTLY DISJOINT)
+01:31:27  INFO        Combined Test Samples  : 107
+01:31:27  INFO        Expected DP Steps/Client: 1980
+01:31:27  INFO        Privacy Accounting     : Dynamic Overlap-Aware RDP Composition (Worst-Case on 3-Client Records)
+01:31:27  INFO        Save Checkpoints       : True
+01:31:27  INFO      ================================================================
+01:31:27  INFO      ================================================================
+01:31:27  INFO      Starting Federated DP-SGD Training for Sigma = 0.50 (Seed: 92)
+01:31:27  INFO      ================================================================
+01:35:50  INFO        [Round 01/20]  Sigma: 0.50  |  Avg Train Loss: 0.6389
+01:53:06  INFO        [Round 05/20]  Sigma: 0.50  |  Avg Train Loss: 0.5208
+02:14:26  INFO        [Round 10/20]  Sigma: 0.50  |  Avg Train Loss: 0.4884
+02:35:19  INFO        [Round 15/20]  Sigma: 0.50  |  Avg Train Loss: 0.4774
+02:56:06  INFO        [Round 20/20]  Sigma: 0.50  |  Avg Train Loss: 0.4646
+02:56:06  INFO      Training completed for Sigma = 0.50 in 5079.43s
+02:56:06  INFO      Evaluating trained model (Sigma = 0.50) on combined held-out test set...
+02:56:10  INFO        Results (Sigma=0.50): Dice=0.5067, IoU=0.3743, Precision=0.5176, Recall=0.6369
+02:56:17  INFO        DP Accounting (delta=1e-05):
+02:56:17  INFO          - Per-Client Epsilon       : H0=58.8613, H1=59.0725, H2=59.2859
+02:56:17  INFO          - 1-Client Records (N=571) : eps = 59.2859
+02:56:17  INFO          - 2-Client Records (N=106) : eps = 91.5786
+02:56:17  INFO          - 3-Client Records (N=2)   : eps = 119.0825 (WORST-CASE)
+02:56:17  INFO          - Federation Worst-Case Epsilon : 119.0825
+02:56:17  INFO        Checkpoint saved to /kaggle/working/SDFL/Results_New/E11/checkpoints/e11_sigma_0p5.pth
+02:56:18  INFO      ================================================================
+02:56:18  INFO      Starting Federated DP-SGD Training for Sigma = 1.00 (Seed: 142)
+02:56:18  INFO      ================================================================
+03:00:21  INFO        [Round 01/20]  Sigma: 1.00  |  Avg Train Loss: 0.6675
+03:16:51  INFO        [Round 05/20]  Sigma: 1.00  |  Avg Train Loss: 0.5530
+03:37:12  INFO        [Round 10/20]  Sigma: 1.00  |  Avg Train Loss: 0.5258
+03:58:03  INFO        [Round 15/20]  Sigma: 1.00  |  Avg Train Loss: 0.5100
+04:18:41  INFO        [Round 20/20]  Sigma: 1.00  |  Avg Train Loss: 0.4920
+04:18:41  INFO      Training completed for Sigma = 1.00 in 4943.78s
+04:18:41  INFO      Evaluating trained model (Sigma = 1.00) on combined held-out test set...
+04:18:45  INFO        Results (Sigma=1.00): Dice=0.4885, IoU=0.3576, Precision=0.5283, Recall=0.5876
+04:18:48  INFO        DP Accounting (delta=1e-05):
+04:18:48  INFO          - Per-Client Epsilon       : H0=9.8179, H1=9.8615, H2=9.9057
+04:18:48  INFO          - 1-Client Records (N=571) : eps = 9.9057
+04:18:48  INFO          - 2-Client Records (N=106) : eps = 14.6976
+04:18:48  INFO          - 3-Client Records (N=2)   : eps = 18.7191 (WORST-CASE)
+04:18:48  INFO          - Federation Worst-Case Epsilon : 18.7191
+04:18:48  INFO        Checkpoint saved to /kaggle/working/SDFL/Results_New/E11/checkpoints/e11_sigma_1p0.pth
+04:18:48  INFO      ================================================================
+04:18:48  INFO      Starting Federated DP-SGD Training for Sigma = 1.50 (Seed: 192)
+04:18:48  INFO      ================================================================
+04:22:55  INFO        [Round 01/20]  Sigma: 1.50  |  Avg Train Loss: 0.7569
+04:39:32  INFO        [Round 05/20]  Sigma: 1.50  |  Avg Train Loss: 0.5992
+05:00:12  INFO        [Round 10/20]  Sigma: 1.50  |  Avg Train Loss: 0.5470
+05:20:51  INFO        [Round 15/20]  Sigma: 1.50  |  Avg Train Loss: 0.5266
+05:41:45  INFO        [Round 20/20]  Sigma: 1.50  |  Avg Train Loss: 0.5130
+05:41:45  INFO      Training completed for Sigma = 1.50 in 4976.58s
+05:41:45  INFO      Evaluating trained model (Sigma = 1.50) on combined held-out test set...
+05:41:49  INFO        Results (Sigma=1.50): Dice=0.4923, IoU=0.3598, Precision=0.5319, Recall=0.5855
+05:41:50  INFO        DP Accounting (delta=1e-05):
+05:41:50  INFO          - Per-Client Epsilon       : H0=4.9544, H1=4.9760, H2=4.9974
+05:41:50  INFO          - 1-Client Records (N=571) : eps = 4.9974
+05:41:50  INFO          - 2-Client Records (N=106) : eps = 7.3706
+05:41:50  INFO          - 3-Client Records (N=2)   : eps = 9.3100 (WORST-CASE)
+05:41:50  INFO          - Federation Worst-Case Epsilon : 9.3100
+05:41:50  INFO        Checkpoint saved to /kaggle/working/SDFL/Results_New/E11/checkpoints/e11_sigma_1p5.pth
+05:41:50  INFO      ================================================================
+05:41:50  INFO      Starting Federated DP-SGD Training for Sigma = 2.00 (Seed: 242)
+05:41:50  INFO      ================================================================
+05:45:58  INFO        [Round 01/20]  Sigma: 2.00  |  Avg Train Loss: 0.7285
+06:02:38  INFO        [Round 05/20]  Sigma: 2.00  |  Avg Train Loss: 0.6131
+06:23:48  INFO        [Round 10/20]  Sigma: 2.00  |  Avg Train Loss: 0.5614
+06:44:41  INFO        [Round 15/20]  Sigma: 2.00  |  Avg Train Loss: 0.5452
+07:05:02  INFO        [Round 20/20]  Sigma: 2.00  |  Avg Train Loss: 0.5352
+07:05:02  INFO      Training completed for Sigma = 2.00 in 4992.07s
+07:05:02  INFO      Evaluating trained model (Sigma = 2.00) on combined held-out test set...
+07:05:06  INFO        Results (Sigma=2.00): Dice=0.4819, IoU=0.3527, Precision=0.4764, Recall=0.6458
+07:05:07  INFO        DP Accounting (delta=1e-05):
+07:05:07  INFO          - Per-Client Epsilon       : H0=3.3322, H1=3.3465, H2=3.3608
+07:05:07  INFO          - 1-Client Records (N=571) : eps = 3.3608
+07:05:07  INFO          - 2-Client Records (N=106) : eps = 4.9332
+07:05:07  INFO          - 3-Client Records (N=2)   : eps = 6.2026 (WORST-CASE)
+07:05:07  INFO          - Federation Worst-Case Epsilon : 6.2026
+07:05:07  INFO        Checkpoint saved to /kaggle/working/SDFL/Results_New/E11/checkpoints/e11_sigma_2p0.pth
+07:05:07  INFO      Results written to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.json and /kaggle/working/SDFL/Results_New/E11/e11_privacy_results.json
+07:05:07  INFO      CSV results written to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility_results.csv
+07:05:07  INFO      Markdown report generated at /kaggle/working/SDFL/Results_New/E11/E11_RESULTS.md
+07:05:10  INFO      Figures saved to /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility.png and /kaggle/working/SDFL/Results_New/E11/e11_privacy_utility.pdf
+07:05:10  INFO      ================================================================
+07:05:10  INFO      E11 Empirical Privacy-Utility Sweep Complete!
+07:05:10  INFO      ================================================================

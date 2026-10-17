@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SDFL — Polyp Segmentation Viewer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b1220;
+    --panel: #121a2b;
+    --panel-border: #1f2b42;
+    --text: #e7ecf3;
+    --text-dim: #8593ab;
+    --teal: #2dd4bf;
+    --amber: #f5a623;
+    --danger: #ef4444;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height: 100vh;
+  }
+  .wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+  header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--panel-border);
+    padding-bottom: 20px;
+    margin-bottom: 32px;
+  }
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.02em;
+    margin: 0;
+  }
+  h1 span { color: var(--teal); }
+  .mode-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border: 1px solid var(--panel-border);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  .mode-badge.real { color: var(--teal); border-color: var(--teal); }
+  .mode-badge.mock { color: var(--amber); border-color: var(--amber); }
+
+  .dropzone {
+    border: 1.5px dashed var(--panel-border);
+    border-radius: 12px;
+    padding: 48px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    background: var(--panel);
+  }
+  .dropzone:hover, .dropzone.dragover {
+    border-color: var(--teal);
+    background: #0f1c2e;
+  }
+  .dropzone p { margin: 6px 0; color: var(--text-dim); }
+  .dropzone .cta {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    color: var(--text);
+    font-weight: 500;
+  }
+  input[type="file"] { display: none; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 28px;
+  }
+  @media (max-width: 800px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .panel .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+  .panel .imgbox {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background: #060a12;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .panel img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .placeholder { color: #3a475e; font-size: 12px; font-family: 'IBM Plex Mono', monospace; }
+
+  .scanline {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--teal), transparent);
+    top: 0;
+    opacity: 0;
+  }
+  .scanline.active {
+    animation: sweep 1.1s ease-in-out;
+  }
+  @keyframes sweep {
+    0% { top: 0; opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+  .spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--panel-border);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+  .spinner.active { display: inline-block; }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .metrics {
+    display: flex;
+    gap: 18px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+  }
+  .metric {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    min-width: 150px;
+  }
+  .metric .k {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+  .metric .v {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+  }
+  .metric.warn .v { color: var(--amber); }
+  .metric.ok .v { color: var(--teal); }
+
+  .status-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 14px;
+    min-height: 18px;
+  }
+  .status-line.err { color: var(--danger); }
+
+  .legend {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 40px;
+    line-height: 1.7;
+    border-top: 1px solid var(--panel-border);
+    padding-top: 20px;
+  }
+  .legend b { color: var(--text); }
+  .hospital-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .field-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  .hospital-input {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    padding: 8px 12px;
+    outline: none;
+    width: 240px;
+    transition: border-color 0.2s;
+  }
+  .hospital-input:focus { border-color: var(--teal); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>SDFL <span>/</span> Polyp Segmentation Viewer</h1>
+    <div id="modeBadge" class="mode-badge">checking backend…</div>
+  </header>
+
+  <div class="hospital-row">
+    <label class="field-label" for="hospitalId">Hospital ID</label>
+    <input
+      type="text"
+      id="hospitalId"
+      class="hospital-input"
+      placeholder="e.g. hospital-001"
+      value="demo-hospital"
+    />
+  </div>
+  <div class="dropzone" id="dropzone">
+    <div class="cta">Drop an endoscopy image here, or click to upload</div>
+    <p>JPG or PNG · runs 20 MC Dropout passes per image</p>
+    <input type="file" id="fileInput" accept="image/*" />
+  </div>
+
+  <div class="status-line" id="status">
+    <span id="statusText"></span>
+    <span class="spinner" id="spinner"></span>
+  </div>
+
+  <div id="reviewBanner" style="display:none; margin-top:18px;
+    padding:14px 18px; border-radius:10px; font-family:'IBM Plex Mono',
+    monospace; font-size:13px; font-weight:500;">
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="label">Input</div>
+      <div class="imgbox" id="boxOriginal"><span class="placeholder">no image yet</span></div>
+    </div>
+    <div class="panel">
+      <div class="label">Predicted mask</div>
+      <div class="imgbox" id="boxMask"><span class="placeholder">awaiting inference</span></div>
+    </div>
+    <div class="panel">
+      <div class="label">Uncertainty (MC dropout variance)</div>
+      <div class="imgbox" id="boxUncertainty">
+        <span class="placeholder">awaiting inference</span>
+        <div class="scanline" id="scanline"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="metrics" id="metrics" style="display:none">
+    <div class="metric ok">
+      <div class="k">Lesion confidence</div>
+      <div class="v" id="mPeak">—</div>
+    </div>
+    <div class="metric warn">
+      <div class="k">Mean uncertainty</div>
+      <div class="v" id="mUncert">—</div>
+    </div>
+    <div class="metric">
+      <div class="k">MC passes</div>
+      <div class="v" id="mPasses">—</div>
+    </div>
+  </div>
+
+  <div id="modelStats" style="display:none; margin-top:18px;
+    background:var(--panel); border:1px solid var(--panel-border);
+    border-radius:10px; padding:14px 18px;">
+    <div class="k" style="font-family:'IBM Plex Mono',monospace;
+      font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
+      color:var(--text-dim); margin-bottom:10px;">
+      Model · E8 Full SDFL Stack
+    </div>
+    <div id="statsContent" style="font-family:'IBM Plex Mono',monospace;
+      font-size:12px; color:var(--text-dim); line-height:2.0;"></div>
+  </div>
+
+  <div id="historySection" style="display:none; margin-top:32px;">
+    <div class="field-label" style="margin-bottom:12px;">
+      Recent Predictions
+    </div>
+    <div style="overflow-x:auto;">
+      <table id="historyTable" style="width:100%; border-collapse:collapse;
+        font-family:'IBM Plex Mono',monospace; font-size:11px;">
+        <thead>
+          <tr style="color:var(--text-dim); border-bottom:
+            1px solid var(--panel-border);">
+            <th style="text-align:left; padding:8px 10px;">Time</th>
+            <th style="text-align:left; padding:8px 10px;">Hospital</th>
+            <th style="text-align:left; padding:8px 10px;">Confidence</th>
+            <th style="text-align:left; padding:8px 10px;">Uncertainty</th>
+            <th style="text-align:left; padding:8px 10px;">Flag</th>
+            <th style="text-align:left; padding:8px 10px;">Mode</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="modelMetricsPanel" style="margin-top:24px; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 10px; padding: 18px;">
+    <div style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px;">Model Evaluation Summary (e8_metrics.json)</div>
+    <div style="display:flex; gap:24px; flex-wrap:wrap; font-size:13px;">
+      <div>In-Dist Dice: <b id="e8IdDice" style="color:var(--teal)">0.4145</b></div>
+      <div>OOD Dice: <b id="e8OodDice" style="color:var(--teal)">0.4869</b></div>
+      <div>Privacy ($\epsilon$): <b id="e8Eps" style="color:var(--teal)">2.77</b></div>
+      <div>Failure Detection AUC: <b id="e8Auc" style="color:var(--amber)">0.5052 (Experimental)</b></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <b>Teal overlay</b> = predicted polyp region. <b>Amber heatmap</b> = per-pixel uncertainty across
+    20 stochastic forward passes. <br/>
+    <span style="color:var(--amber); font-weight:500;">⚠️ Notice:</span> Uncertainty review flagging is currently <i>experimental / under research</i> (Failure Detection AUC ≈ 0.505). High uncertainty maps provide spatial variance visualization but should not be relied upon live as an automated clinical filter.
+  </div>
+</div>
+
+<script>
+const API_BASE = "http://localhost:8000";
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+const statusText = document.getElementById('statusText');
+const spinner = document.getElementById('spinner');
+const modeBadge = document.getElementById('modeBadge');
+const reviewBanner = document.getElementById('reviewBanner');
+const modelStats = document.getElementById('modelStats');
+const statsContent = document.getElementById('statsContent');
+const historySection = document.getElementById('historySection');
+const historyBody = document.getElementById('historyBody');
+
+// Check backend health and load model info on startup
+async function checkHealth() {
+  try {
+    const res = await fetch(`${API_BASE}/health`);
+    const data = await res.json();
+    modeBadge.textContent = data.real_model_available
+      ? "real model loaded" : "mock mode";
+    modeBadge.className = "mode-badge "
+      + (data.real_model_available ? "real" : "mock");
+  } catch (e) {
+    modeBadge.textContent = "backend offline";
+    modeBadge.className = "mode-badge";
+  }
+}
+
+async function loadModelInfo() {
+  try {
+    const res = await fetch(`${API_BASE}/model-info`);
+    const d = await res.json();
+    statsContent.innerHTML = `
+      Dataset: Kvasir-SEG &nbsp;|&nbsp;
+      Training rounds: ${d.training_rounds} &nbsp;|&nbsp;
+      val Dice: ${d.val_dice} &nbsp;|&nbsp;
+      ε = ${d.privacy_budget_epsilon}
+      (δ = ${d.privacy_budget_delta}) &nbsp;|&nbsp;
+      MC passes: ${d.mc_dropout_passes}
+    `;
+    modelStats.style.display = 'block';
+  } catch(e) { /* silently skip if endpoint not ready */ }
+}
+
+checkHealth();
+loadModelInfo();
+
+// Drag and drop
+dropzone.addEventListener('click', () => fileInput.click());
+dropzone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropzone.classList.add('dragover');
+});
+dropzone.addEventListener('dragleave', () =>
+  dropzone.classList.remove('dragover'));
+dropzone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropzone.classList.remove('dragover');
+  if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', (e) => {
+  if (e.target.files.length) handleFile(e.target.files[0]);
+});
+
+function showOriginal(file) {
+  const url = URL.createObjectURL(file);
+  document.getElementById('boxOriginal').innerHTML =
+    `<img src="${url}" />`;
+}
+
+function setStatus(msg, isError = false) {
+  statusText.textContent = msg;
+  statusText.style.color = isError ? 'var(--danger)' : '';
+}
+
+function setLoading(active) {
+  spinner.className = active ? 'spinner active' : 'spinner';
+  dropzone.style.pointerEvents = active ? 'none' : '';
+  dropzone.style.opacity = active ? '0.6' : '';
+}
+
+async function handleFile(file) {
+  // File type check
+  if (!file.type.startsWith('image/')) {
+    setStatus('Error: please upload a JPG or PNG image.', true);
+    return;
+  }
+
+  showOriginal(file);
+  setStatus('Running 20 MC Dropout passes…');
+  setLoading(true);
+  reviewBanner.style.display = 'none';
+  document.getElementById('metrics').style.display = 'none';
+
+  const hospitalId = document.getElementById('hospitalId').value.trim()
+    || 'anonymous';
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('hospital_id', hospitalId);
+
+  try {
+    const res = await fetch(`${API_BASE}/predict`,
+      { method: 'POST', body: formData });
+
+    if (res.status === 422) {
+      const err = await res.json();
+      setStatus(`Rejected: ${err.message}`, true);
+      setLoading(false);
+      return;
+    }
+    if (!res.ok) throw new Error(`Server responded ${res.status}`);
+
+    const data = await res.json();
+    console.log("[DEBUG] Raw fetch response data:", data);
+    console.log("[DEBUG] Raw mean_uncertainty from JSON:", data.mean_uncertainty);
+    const logMu = data.mean_uncertainty !== undefined ? data.mean_uncertainty.toFixed(6) : "N/A";
+    console.log("[DEBUG] Formatted mean_uncertainty (toFixed(6)):", logMu);
+
+    // Update panels
+    if (data.sanitized_png_base64) {
+      document.getElementById('boxOriginal').innerHTML =
+        `<img src="data:image/png;base64,${data.sanitized_png_base64}" />`;
+    }
+    document.getElementById('boxMask').innerHTML =
+      `<img src="data:image/png;base64,${data.overlay_png_base64}" />`;
+    document.getElementById('boxUncertainty').innerHTML =
+      `<img src="data:image/png;base64,${data.heatmap_png_base64}" />
+       <div class="scanline active"></div>`;
+
+    // Update metrics
+    document.getElementById('mPeak').textContent =
+      data.peak_confidence.toFixed(3);
+    const mu =
+        data.mean_uncertainty !== undefined
+          ? data.mean_uncertainty.toFixed(6)
+          : "N/A";
+    document.getElementById('mUncert').textContent = mu;
+    document.getElementById('mPasses').textContent = data.n_mc_passes;
+    document.getElementById('metrics').style.display = 'flex';
+
+    // Review flag banner
+    if (data.failure_flag) {
+      reviewBanner.style.cssText =
+        'display:block; margin-top:18px; padding:14px 18px; ' +
+        'border-radius:10px; font-family:IBM Plex Mono,monospace; ' +
+        'font-size:13px; font-weight:500; ' +
+        'background:#2d1a00; border:1px solid var(--amber); ' +
+        'color:var(--amber);';
+      reviewBanner.textContent =
+        '⚠️  High uncertainty — Gastroenterologist review recommended.';
+    } else {
+      reviewBanner.style.cssText =
+        'display:block; margin-top:18px; padding:14px 18px; ' +
+        'border-radius:10px; font-family:IBM Plex Mono,monospace; ' +
+        'font-size:13px; font-weight:500; ' +
+        'background:#001a12; border:1px solid var(--teal); ' +
+        'color:var(--teal);';
+      reviewBanner.textContent = '✅  Result reliable.';
+    }
+
+    // Update badge
+    modeBadge.textContent = data.mode === 'real'
+      ? "real model loaded" : "mock mode";
+    modeBadge.className = "mode-badge "
+      + (data.mode === 'real' ? "real" : "mock");
+
+    setStatus(data.mode === 'mock'
+      ? 'done (mock inference — add e8_final.pth for real predictions)'
+      : 'done');
+
+    // Refresh history
+    loadHistory(hospitalId);
+
+  } catch (err) {
+    setStatus(
+      `Error: ${err.message}. Is the backend running on ${API_BASE}?`,
+      true
+    );
+  } finally {
+    setLoading(false);
+  }
+}
+
+async function loadHistory(hospitalId) {
+  try {
+    const url = hospitalId && hospitalId !== 'anonymous' 
+      ? `${API_BASE}/history?hospital_id=${encodeURIComponent(hospitalId)}`
+      : `${API_BASE}/history`;
+    const res = await fetch(url);
+    if (!res.ok) return;
+    const history = await res.json();
+    if (history.length > 0) {
+      historySection.style.display = 'block';
+      historyBody.innerHTML = history.map(h => `
+        <tr style="border-bottom: 1px solid var(--panel-border);">
+          <td style="padding:8px 10px;">${new Date(h.timestamp).toLocaleTimeString()}</td>
+          <td style="padding:8px 10px;">${h.hospital_id}</td>
+          <td style="padding:8px 10px;">${h.peak_confidence.toFixed(3)}</td>
+          <td style="padding:8px 10px;">${h.mean_uncertainty.toFixed(6)}</td>
+          <td style="padding:8px 10px;">${h.failure_flag ? '⚠️' : '✅'}</td>
+          <td style="padding:8px 10px;">${h.mode}</td>
+        </tr>
+      `).join('');
+    }
+  } catch (e) {
+    console.error('Failed to load history', e);
+  }
+}
+</script>
+</body>
+</html>
